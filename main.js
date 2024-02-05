@@ -1,4 +1,3 @@
-
 const ages = [20, 40, 30, 15, 18, 17, 19, 21, 61, 55, 54, 9, 3, 22, 23];
 
 const famousPeople = [
@@ -40,30 +39,72 @@ let canDrink = ages.filter(function(age) {
 }); 
 */
 
-// filter fat arrow
-const canDrink = ages.filter(age => age >= 21);
-const ageBetween = ages.filter(age => age >= 21 && age <= 39);
-const olderThen = famousPeople.filter ( fPerson => (fPerson.end - fPerson.active >= 80));
+// filter fat arrow :: First bullet point
+const canDrink = ages.filter(age => age > 30);  // filter(age => age =< 50);
+const filteredAges2 = ages.filter(age => age >= 20 && age <= 40);
+const ageBetween = ages.filter(age => age >= 20 && age <= 40);
+const olderThen = famousPeople.filter ( fPerson => (fPerson.end - fPerson.active >= 20));
+// console.log("olderThen", olderThen)
+
+// // bonus:
+const ageDifferenceGreaterThan40FamousPeople = famousPeople.filter(person => person.end - person.active > 40); // 50, 60, etc
+
+// Destructuring version
+// const ageDifferenceGreaterThan40FamousPeople = famousPeople.filter(({ end, active }) => end - active > 40);
+// console.log("Age difference > 40 (Famous People):", ageDifferenceGreaterThan40FamousPeople);
 
 
+
+
+
+// Second bullet point
+// chatgpt Active-End Difference <= 45:
+// Filter on “active” and “end”, where the difference between “active” and “end” is smaller or equal to 45
+const activeEndDifference45 = famousPeople.filter(person => person.end - person.active <= 45);
+//console.log("Active-End Difference <= 45:", activeEndDifference45);
 const betweenOrEqualto45 = famousPeople.filter (age45 => (age45.end - age45.active) <= 45);
+// console.log("betweenOrEqualto45", betweenOrEqualto45)
+
+// Filter on occupation, so you only get shown the ones that are “dancers”
 let getoccu = famousPeople.filter (occu => occu.occupation === "Dancer");
+// console.log("getoccu", getoccu)
+
+// Filter on occupation, so you only get shown the ones that are “actors” and “singers”
 let getoccu2 = famousPeople.filter (occu => occu.occupation === "Actor" && occu.occupation === "Singer");
+// console.log("getoccu2", getoccu2)
+
 
 // sort MDN  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-// bruger chaining-method her. Så efter sort() har kørt, sætter jeg .reverse() på 
-randoSort = famousPeople.sort(
+// Using chaining-method here. after sort() has run, i am adding(chaning) .reverse() to it.
+let randoSort = famousPeople.sort(
   function(a, b){
-    ;debugger
+   // ;debugger
     return a.active - b.active
-    
   }).reverse();
- 
-console.log(randoSort)  
-// Samme princip her. Sort() der chaines med .reverse(). Dette er er ternary metode at skrive det på:
-randoSortArrow = famousPeople.sort((a, b) => (a.active - b.active) ? 1 : ((b.active - a.active) ? -1 : 0)).reverse();
+ //console.log("randoSort", randoSort)  
 
-//console.log(randoSortArrow)
+// this is the same as above, but with fat arrow
+const randoSortArrowAll = famousPeople.sort((a, b) => {
+  if (a.active > b.active) {
+    return 1;
+  } else if (b.active > a.active) {
+    return -1;
+  } else {
+    return 0;
+  }
+}).reverse();
+//console.log("randoSortArrowAll", randoSortArrowAll)
+
+ // Same principal here. Sort() chaining with .reverse(). This is a ternary operator.
+ let randoSortArrow = famousPeople.sort((a, b) => (a.active - b.active) ? 1 : ((b.active - a.active) ? -1 : 0)).reverse();
+
+ // In the return value -1, 0 and 1 : the comparator function (-1, 0, or 1) determine how the elements should be ordered in the sorted array.
+ // If a.active - b.active is greater than 0, it returns 1, indicating that a should be placed after b.
+ // If b.active - a.active is greater than 0, it returns -1, indicating that b should be placed before a.
+ // If both differences are 0 (i.e., the active properties are equal), it returns 0, indicating that the order should remain unchanged.
+
+
+//console.log("randoSortArrow", randoSortArrow)
 
 // Sort FamousPeople by active year
 
@@ -82,7 +123,7 @@ const sortAges = ages.sort((a, b) => a - b);
 
 
 
-// Map
+// Map Bullet
 
 // halves
 const ageMap = ages
@@ -91,46 +132,69 @@ const ageMap = ages
 //console.log("test map", ageMap)  
 
 // sqrt divisible with 5 (modulus)
+// The first approach applies the square root operation to all numbers, regardless of divisibility by 5, by chaining two separate .map() calls.
 const ageMap2 = ages
   .map(age => age % 5)
   .map(age => Math.sqrt(age))
 
+ // console.log("sqrtModolus", ageMap2)
 
-const mapOnOccupation = famousPeople.map(fp => fp.occupation);
+// The second approach uses a single .map() call with a ternary operator to selectively apply the square root operation only to numbers divisible by 5.
+const squareRootDivisibleBy5 = ages.map(age => (age % 5 === 0 ? Math.sqrt(age) : age));
+// console.log("Square Root of Numbers Divisible by 5:", squareRootDivisibleBy5);
 
+
+let result = 10 % 3;
+// console.log(result);  // Output: 1 (because 10 divided by 3 is 3 with a remainder of 1)
+// Use the modulus operator to check if a number is even or odd
+// use case for modulus operator : "currentHour % 24" | "Pagination" | "Game Development: frames of animations or determining position of objects" | "Calendar"
+
+
+// Extract the category of each famous person into a new array
+//console.log("ageMap2 SqrtModolus", ageMap2)
+const mapOnOccupation = famousPeople.map(fp => fp.category);
+
+//console.log("mapOnOccupation", mapOnOccupation)
 
 
 // Example maps
-// Create array of famousPeople names
+// Create array of famousPeople names (have to do a return with old function)
 const famousPeopleNames = famousPeople.map(function(fp) {
   return fp.name;
 });
 
+// console.log("famousPeopleNames", famousPeopleNames)
+
+// Create array of famousPeople names with active years. return fp name first and then active years in brackets for visual separation
 const testMap = famousPeople.map(function(fp) {
   return `${fp.name} [${fp.active} - ${fp.end}]`;
 
 });
-
 //console.log("testmap", testMap)
 
+// return is implied with fat arrow
 const testMapFatArrow = famousPeople
   .map(fp => `${fp.name} [${fp.active} - ${fp.end}]`);
 
+//console.log("testMapFatArrow", testMapFatArrow)
 
 
-// reduce
+
+
+// reduce bullet point
 // without function arrow
+
 const ageSumReduce = ages.reduce(function(total, age) {
   return total + age;
  
-}, 10);
+}, 0);  // change value
 
-//console.log("agesumReduce", ageSumReduce)
+// console.log("agesumReduce", ageSumReduce)
 
 const ageSumReduceArrow = ages.reduce((total, age) => total + age, 0);
 
 
-// reduce
+// total amount of years for all famous people using += operator - += is a shorthand for total = total + age
 /* 
 let ageSum = 0;
 for(let i = 0; i < ages.length; i++) {
@@ -138,27 +202,26 @@ for(let i = 0; i < ages.length; i++) {
 }
 */
 
+
 let smallAgeReduce = ages.reduce(function (acc, val){
   if (val < acc) {
     acc = val;
   }
   return acc;
 })
-//                            if a smaller then b... then return a, else return b
+// if a smaller then b... then return a, else return b
 let smallAgeReduceArrow = ages.reduce((a, b) => a < b ? a : b)
+// console.log("smallAgeReduceArrow", smallAgeReduceArrow)
 
 
-// Combine Methods
 
-const combined = ages
-  .map(age => age * 2)
-  .filter(age => age >= 42)
-  .sort((a, b) => a - b)
-  .reduce((a, b) => a + b, 0)
- 
+// Combine/chaining Methods to get a single value
+  const combined = ages
+  .map(age => age * 2)  // Multiply each age by 2
+  .filter(age => age >= 42)  // Keep only ages greater than or equal to 42
+  .reduce((a, b) => a + b, 0);  // Sum all the sorted ages
 
-console.log(combined);
- 
+ console.log("combined", combined);
  
 
  
